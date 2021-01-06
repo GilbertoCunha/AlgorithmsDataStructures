@@ -15,6 +15,7 @@ typedef Edge GraphL[MAX];
 typedef WEIGHT GraphM[MAX][MAX];
 
 void GraphgraphL (GraphL g, int V);
+void GraphgraphM (GraphM g, int V);
 void graphMtoL (GraphM gm, GraphL gl, int V);
 void graphLtoM (GraphL gl, GraphM gm, int V);
 void ShowGraphM (GraphM g, int V);

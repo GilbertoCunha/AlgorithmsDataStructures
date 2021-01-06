@@ -24,6 +24,23 @@ void GraphgraphL (GraphL g, int V) {
     system ("dot -Kfdp -Tpng -Goverlap=false -Gsplines=true graph.dot > graph.png");
 }
 
+void GraphgraphM (GraphM g, int V) {
+    FILE *f = fopen("graph.dot", "w");
+
+    fprintf (f, "digraph G {\n");
+    fprintf (f, "\tlabelloc=\"t\";\n");
+    fprintf (f, "\tlabel=\"Graph\";\n");
+    for (int u=0; u<V; ++u) {
+        fprintf (f, "\t%d [label=\"%d\"];\n", u, u);
+        for (int v=0; v<V; ++v) 
+            if (g[u][v] != NE)
+                fprintf (f, "\t%d->%d [label=\"%d\"];\n", u, v, g[u][v]);
+    }
+    fprintf (f, "}");
+    fclose (f);
+    system ("dot -Kfdp -Tpng -Goverlap=false -Gsplines=true graph.dot > graph.png");
+}
+
 void graphMtoL (GraphM gm, GraphL gl, int V) {
     for (int i=0; i<V; ++i) {
         gl[i] = NULL;
