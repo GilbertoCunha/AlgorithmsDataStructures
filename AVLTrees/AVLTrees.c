@@ -12,16 +12,16 @@ void ShowAVLTree (AVLTree a) {
 
 void GraphAVLTreeAux (AVLTree a, FILE *f) {
     if (a != NULL) {
-        fprintf (f, "%d [label=\"key:%d\nvalue:%d\"];\n", a->key, a->key, a->root);
+        fprintf (f, "\t%d [label=\"key:%d\nvalue:%d\"];\n", a->key, a->key, a->root);
         if (a->left != NULL) fprintf (f, "%d -> %d;\n", a->key, a->left->key);
         else if (a->right != NULL) {
-            fprintf (f, "%d [shape=point];\n", (int) &(a->left));
-            fprintf (f, "%d -> %d;\n", a->key, (int) &(a->left));
+            fprintf (f, "\t%d [shape=point];\n", (int) &(a->left));
+            fprintf (f, "\t%d -> %d;\n", a->key, (int) &(a->left));
         }
         if (a->right != NULL) fprintf (f, "%d -> %d;\n", a->key, a->right->key);
         else if (a->left != NULL){
-            fprintf (f, "%d [shape=point];\n", (int) &(a->right));
-            fprintf (f, "%d -> %d;\n", a->key, (int) &(a->right));
+            fprintf (f, "\t%d [shape=point];\n", (int) &(a->right));
+            fprintf (f, "\t%d -> %d;\n", a->key, (int) &(a->right));
         }
         GraphAVLTreeAux (a->left, f);
         GraphAVLTreeAux (a->right, f);
