@@ -24,4 +24,5 @@ void dfs_visit (GraphL g, int s, int color[]);
 void dfs (GraphL g, int V);
 void bfs_visit (GraphL g, int s, int color[]);
 void bfs (GraphL g, int V);
+
 #endif

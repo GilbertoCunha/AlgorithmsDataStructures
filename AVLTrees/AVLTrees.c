@@ -38,6 +38,7 @@ void GraphAVLTree (AVLTree a) {
         fprintf (f, "}");
         fclose (f);
         system ("dot -Tpng avl.dot > avl.png");
+        system ("open avl.png");
     }
 }
 
