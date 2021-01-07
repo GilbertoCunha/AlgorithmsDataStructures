@@ -6,6 +6,8 @@
 #define GRAY 1
 #define BLACK 2
 
+int color[MAX];
+
 void GraphgraphL (GraphL g, int V) {
     FILE *f = fopen("graph.dot", "w");
     Edge p;
@@ -94,7 +96,7 @@ void ShowGraphL (GraphL g, int V) {
     printf ("\n");
 }
 
-void dfs_visit (GraphL g, int s, int color[]) {
+void dfs_visit (GraphL g, int s) {
     Edge p;
 
     color[s] = GRAY;
@@ -107,9 +109,43 @@ void dfs_visit (GraphL g, int s, int color[]) {
 }
 
 void dfs (GraphL g, int V) {
-    int u, color[V];
+    int u;
+    printf ("Depth Traversal:\n");
     for (u=0; u<V; ++u) color[u] = WHITE;
     for (u=0; u<V; ++u)
         if (color[u] == WHITE)
-            dfs_visit (g, u, color);
+            dfs_visit (g, u);
+    for (u=0; u<V; ++u) printf ("V: %d | C: %d\n", u, color[u]);
+    printf ("\n");
+}
+
+void bfs_visit (GraphL g, int s) {
+    Edge p;
+    int u, queue[MAX], first=0, last=0;
+
+    color[s] = GRAY;
+    queue[last++] = s;
+
+    while (first < last) {
+        u = queue[first++];
+        
+        for (p=g[u]; p; p=p->next)
+            if (color[p->dest] == WHITE) {
+                color[p->dest] = GRAY;
+                queue[last++] = p->dest;
+            }
+
+        color[u] = BLACK;
+    }
+}
+
+void bfs (GraphL g, int V, int verbose) {
+    int u;
+    printf ("Breadth Traversal:\n");
+    for (u=0; u<V; ++u) color[u] = WHITE;
+    for (u=0; u<V; ++u)
+        if (color[u] == WHITE)
+            bfs_visit (g, u);
+    for (u=0; u<V; ++u) printf ("V: %d | C: %d\n", u, color[u]);
+    printf ("\n");
 }

@@ -22,6 +22,8 @@ int main () {
     graphMtoL (gm1, gl1, 9);
     ShowGraphL (gl1, 9);
     // GraphgraphL (gl1, 9);
+    dfs (gl1, 9);
+    bfs (gl1, 9);
 
     // Convert adj list graph back to matrix graph
     graphLtoM (gl1, gm1, 9);

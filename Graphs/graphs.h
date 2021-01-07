@@ -22,4 +22,6 @@ void ShowGraphM (GraphM g, int V);
 void ShowGraphL (GraphL g, int V);
 void dfs_visit (GraphL g, int s, int color[]);
 void dfs (GraphL g, int V);
+void bfs_visit (GraphL g, int s, int color[]);
+void bfs (GraphL g, int V);
 #endif
