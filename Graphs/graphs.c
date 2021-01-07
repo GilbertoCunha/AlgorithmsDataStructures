@@ -103,7 +103,7 @@ void dfs_visit (GraphL g, int s) {
 
     for (p=g[s]; p; p=p->next)
         if (color[p->dest] == WHITE)
-            dfs_visit (g, p->dest, color);
+            dfs_visit (g, p->dest);
 
     color[s] = BLACK;
 }
@@ -139,7 +139,7 @@ void bfs_visit (GraphL g, int s) {
     }
 }
 
-void bfs (GraphL g, int V, int verbose) {
+void bfs (GraphL g, int V) {
     int u;
     printf ("Breadth Traversal:\n");
     for (u=0; u<V; ++u) color[u] = WHITE;
