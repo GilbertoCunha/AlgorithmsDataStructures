@@ -7,7 +7,7 @@
 
 #define EMPTY   "-"
 #define REMOVED "+"
-#define MAX 20
+#define MAX 5
 
 typedef struct entry {
     char *key;
@@ -21,7 +21,7 @@ typedef struct hash {
 } HashT;
 
 void ShowHash (HashT h);
-int initHash (HashT *h, int load_factor);
+int initHash (HashT *h, float load_factor);
 int djb2hash (HashT h, char *key);
 int insertHash (HashT *h, char *key, int value);
 int searchHash (HashT h, char *key, int *value);

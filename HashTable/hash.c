@@ -7,17 +7,18 @@ void ShowHash (HashT h) {
     printf ("\n");
 }
 
-int initHash (HashT *h, int load_factor) {
-    h->size = MAX; h->used = 0; h->lf = load_factor;
+int initHash (HashT *h, float load_factor) {
+    h->size = MAX; 
+    h->used = 0; 
+    h->lf = load_factor; 
     h->pairs = malloc (h->size * (sizeof (struct entry)));
     for (int i=0; i<h->size; ++i) h->pairs[i].key = strdup (EMPTY);
 }
 
 int djb2hash (HashT h, char *key) {
-    /*int c, hash = 5381;
+    int c, hash = 5381;
     while (c = *key++) hash = ((hash << 5) + hash) + c;
-    return hash % h.size;*/
-    return key[0] % h.size;
+    return hash % h.size;
 }
 
 int freeEntry (char *str) {
@@ -28,9 +29,33 @@ int freeEntry (char *str) {
     return r;
 }
 
-int insertHash (HashT *h, char *key, int value) {
-    int i, r = 1, hash = djb2hash (*h, key);
+void reHash (HashT *h) {
+    HashT aux;
+    int hash;
+    // Copiar para uma hashtable auxiliar
+    aux.used = h->used; aux.size = h->size; aux.lf = h->lf;
+    aux.pairs = malloc (aux.size * sizeof (struct entry));
+    for (int i=0; i<aux.size; ++i) {
+        aux.pairs[i].key = strdup (h->pairs[i].key);
+        aux.pairs[i].value = h->pairs[i].value;
+    }
 
+    // Reinicializar a hash
+    free (h->pairs); h->size *= 2; h->used = 0; 
+    h->pairs = malloc (h->size * sizeof (struct entry));
+    for (int i=0; i<h->size; ++i) h->pairs[i].key = strdup (EMPTY);
+
+    // Rehashing
+    for (int i=0; i<aux.size; ++i)
+        if (!freeEntry (aux.pairs[i].key))
+            insertHash (h, aux.pairs[i].key, aux.pairs[i].value);
+}
+
+int insertHash (HashT *h, char *key, int value) {
+    float lf = h->used / h->size;
+    if (lf >= h->lf) reHash (h);
+
+    int i, r = 1, hash = djb2hash (*h, key);
     for (i=hash; !freeEntry (h->pairs[i].key); i=(i+1)%h->size);
     h->pairs[i].key = strdup (key);
     h->pairs[i].value = value;
