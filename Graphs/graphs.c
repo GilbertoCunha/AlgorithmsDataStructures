@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "graphs.h"
 
 #define WHITE 0
@@ -183,6 +181,43 @@ int PrimMST (GraphL g, int V, int s, int mst[V]) {
             }
     }
     return r;
+}
+
+int minimumDist (int color[], int dist[], int V) {
+    int r = -1, dmin = INF;
+    for (int i=0; i<V; ++i)
+        if (color[i] == WHITE && dist[i]<=dmin) {
+            dmin = dist[i];
+            r = i;
+        }
+    return r;
+}
+
+void singleDjikstra (GraphL g, int V, int u, int dist[V], int parent[V]) {
+    Edge p;
+    int v, visited, color[V];
+
+    // Inicializar todos os vértices como não visitados
+    // e a sua distância mínima como infinita
+    for (int i=0; i<V; ++i) {
+        color[i] = WHITE;
+        dist[i] = INF;
+        parent[i] = -2;
+    }
+    
+    // Distância nula para o vértica onde se começa
+    dist[u] = 0; parent[u] = -1; visited = 0;
+
+    while (visited < V) {
+        v = minimumDist (color, dist, V);
+        color[v] = BLACK;
+        for (p=g[v]; p; p=p->next)
+            if (dist[v] + p->weight < dist[p->dest]) {
+                parent[p->dest] = v;
+                dist[p->dest] = dist[v] + p->weight;
+            }
+        visited++;
+    }
 }
 
 void Warshall (GraphM g, GraphM r, int V) {
