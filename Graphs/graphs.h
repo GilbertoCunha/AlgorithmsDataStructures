@@ -24,5 +24,8 @@ void dfs_visit (GraphL g, int s);
 void dfs (GraphL g, int V);
 void bfs_visit (GraphL g, int s);
 void bfs (GraphL g, int V);
+int PrimMST (GraphL g, int V, int u, int mst[V]);
+void Warshall (GraphM g, GraphM r, int V);
+void dynDistances (GraphM g, GraphM r, int V);
 
 #endif

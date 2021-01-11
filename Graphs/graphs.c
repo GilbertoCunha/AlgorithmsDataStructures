@@ -149,3 +149,73 @@ void bfs (GraphL g, int V) {
     for (u=0; u<V; ++u) printf ("V: %d | C: %d\n", u, color[u]);
     printf ("\n");
 }
+
+int getEdgeFringe (int f[], int cost[], int size) {
+    int r, index=0;
+    for (int i=0; i<size; ++i)
+        if (cost[f[i]] < cost[f[index]])
+            index = i;
+    r = f[index];
+    f[index] = f[size-1];
+    return r;
+}
+
+int PrimMST (GraphL g, int V, int s, int mst[V]) {
+    int r=0, u, cost[V], fringe[V], fringesize=0;
+    Edge p;
+
+    for (u=0; u<V; ++u) color[u] = WHITE;
+
+    cost[s] = 0;
+    color[s] = GRAY;
+    fringe[fringesize++] = s;
+
+    while (fringesize > 0) {
+        u = getEdgeFringe (fringe, cost, fringesize);
+        fringesize--;
+        r += cost[u];
+        color[u] = BLACK;
+        for (p=g[u]; p; p=p->next)
+            if (color[p->dest]==WHITE || (color[p->dest]==GRAY && p->weight<cost[p->dest])) {
+                mst[p->dest] = u;
+                cost[p->dest] = p->weight;
+                if (color[p->dest]==WHITE) fringe[fringesize++] = p->dest;
+            }
+    }
+    return r;
+}
+
+void Warshall (GraphM g, GraphM r, int V) {
+    int i, j, k;
+
+    for (i=0; i<V; ++i)
+        for (j=0; j<V; ++j)
+            r[i][j] = g[i][j];
+
+    for (k=0; k<V; ++k)
+        for (i=0; i<V; ++i)
+            for (j=0; j<V; ++j)
+                if (r[i][k] && r[k][j]) 
+                    r[i][j] = 1;
+}
+
+int min (int a, int b) {
+    int r;
+    if (a < b) r = a;
+    else r = b;
+    return r; 
+}
+
+void dynDistances (GraphM g, GraphM r, int V) {
+    int i, j, k;
+    
+    for (i=0; i<V; ++i)
+        for (j=0; j<V; ++j)
+            r[i][j] = g[i][j];
+
+    for (k=0; k<V; ++k)
+        for (i=0; i<V; ++i)
+            for (j=0; j<V; ++j)
+                if (r[i][j] == 0) r[i][j] = r[i][k]+r[k][j];
+                else r[i][j] = min (r[i][j], r[i][k]+r[k][j]);
+}
